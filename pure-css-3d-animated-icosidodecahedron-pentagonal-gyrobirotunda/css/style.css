@@ -1,0 +1,197 @@
+/* ok */
+html, body {
+  height: 100%;
+}
+
+html {
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  perspective: 32em;
+  background: dimgrey;
+  color: white;
+}
+
+.polyhedron, .polyhedron *, .polyhedron *:before {
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-style: preserve-3d;
+}
+
+.polyhedron--icosidodecahedron {
+  animation: ani 16s linear infinite;
+}
+
+/**/
+@keyframes ani {
+  from {
+    transform: rotate(0deg) rotateX(0deg);
+  }
+  to {
+    transform: rotate(360deg) rotateX(-720deg);
+  }
+}
+.polyhedron--pentagonal-rotunda:first-child {
+  transform: translateY(-5.50553em);
+}
+
+.polyhedron--pentagonal-rotunda:last-child {
+  transform: rotateY(36deg) scaleY(-1) translateY(-5.50553em);
+}
+
+.polyhedron__face {
+  overflow: hidden;
+  margin: -4em;
+  width: 8em;
+  height: 8em;
+}
+.polyhedron__face *, .polyhedron__face:before, .polyhedron__face *:before {
+  overflow: hidden;
+  margin: inherit;
+  width: inherit;
+  height: inherit;
+}
+
+.polyhedron__face--triangle:before,
+.penta__inner:before {
+  border: solid .0625em;
+  content: '';
+}
+
+.polyhedron__face--triangle {
+  border-top: solid .125em;
+  border-left: solid .125em;
+}
+.polyhedron__face--triangle:before {
+  transform: scaleX(1.1547) skewY(-30deg) rotate(-30deg) translateY(-50%);
+}
+
+.polyhedron__face--pentagon {
+  margin: -10.47214em;
+  width: 20.94427em;
+  height: 20.94427em;
+  transform: rotateY(144deg) translate3d(-0.0625em, -5.50553em, 5.50553em) rotateX(90deg) rotate(-54deg) skewY(18deg) scaleX(0.95106);
+}
+
+.penta__inner {
+  transform: scaleX(1.05146) skewY(-18deg) rotate(54deg) translateY(-7.60845em) rotate(18deg) skewY(54deg) scaleX(0.58779);
+}
+.penta__inner:before {
+  margin: -6.15537em -6.80521em;
+  width: 13.61041em;
+  height: 12.31073em;
+  transform: scaleX(1.7013) skewY(-54deg) rotate(-18deg) translateY(1.45309em);
+  background: rgba(247, 80, 103, 0.32);
+  background: radial-gradient(circle at 6.80521em 0em, rgba(255, 77, 0, 0.32), rgba(255, 77, 0, 0) 8.50651em), radial-gradient(circle at 13.27734em 4.70228em, rgba(255, 0, 230, 0.32), rgba(255, 0, 230, 0) 8.50651em), radial-gradient(circle at 10.80521em 12.31073em, rgba(0, 26, 255, 0.32), rgba(0, 26, 255, 0) 8.50651em), radial-gradient(circle at 2.80521em 12.31073em, rgba(0, 255, 179, 0.32), rgba(0, 255, 179, 0) 8.50651em), radial-gradient(circle at 0.33307em 4.70228em, rgba(128, 255, 0, 0.32), rgba(128, 255, 0, 0) 8.50651em);
+  background-position: 50% 50%;
+  background-size: 13.61041em 13.61041em;
+}
+
+.polyhedron__face--triangle:nth-child(1) {
+  transform: rotateY(0deg) translate3d(0, 5.44303em, 12.31073em) rotateX(10.81232deg) rotate(30deg) skewY(30deg) scaleX(0.86603);
+}
+.polyhedron__face--triangle:nth-child(1):before {
+  background: linear-gradient(90deg, rgba(255, 153, 0, 0.32), rgba(204, 255, 0, 0.32));
+}
+
+.polyhedron__face--triangle:nth-child(6) {
+  transform: rotateY(0deg) rotate(180deg) translate3d(0, 5.50553em, 5.50553em) rotateX(-52.62263deg) rotate(30deg) skewY(30deg) scaleX(0.86603);
+}
+.polyhedron__face--triangle:nth-child(6):before {
+  background: linear-gradient(90deg, rgba(255, 153, 0, 0.32), rgba(204, 255, 0, 0.32));
+}
+
+.polyhedron__face--pentagon:nth-child(11) {
+  transform: rotateY(36deg) translate3d(0, 5.50553em, 12.31073em) rotateX(26.56505deg) rotate(-54deg) skewY(18deg) scaleX(0.95106);
+}
+.polyhedron__face--pentagon:nth-child(11) .penta__inner:before {
+  background: linear-gradient(90deg, rgba(204, 255, 0, 0.32), rgba(51, 255, 0, 0.32));
+}
+
+.polyhedron__face--triangle:nth-child(2) {
+  transform: rotateY(72deg) translate3d(0, 5.44303em, 12.31073em) rotateX(10.81232deg) rotate(30deg) skewY(30deg) scaleX(0.86603);
+}
+.polyhedron__face--triangle:nth-child(2):before {
+  background: linear-gradient(90deg, rgba(51, 255, 0, 0.32), rgba(0, 255, 102, 0.32));
+}
+
+.polyhedron__face--triangle:nth-child(7) {
+  transform: rotateY(72deg) rotate(180deg) translate3d(0, 5.50553em, 5.50553em) rotateX(-52.62263deg) rotate(30deg) skewY(30deg) scaleX(0.86603);
+}
+.polyhedron__face--triangle:nth-child(7):before {
+  background: linear-gradient(90deg, rgba(51, 255, 0, 0.32), rgba(0, 255, 102, 0.32));
+}
+
+.polyhedron__face--pentagon:nth-child(12) {
+  transform: rotateY(108deg) translate3d(0, 5.50553em, 12.31073em) rotateX(26.56505deg) rotate(-54deg) skewY(18deg) scaleX(0.95106);
+}
+.polyhedron__face--pentagon:nth-child(12) .penta__inner:before {
+  background: linear-gradient(90deg, rgba(0, 255, 102, 0.32), rgba(0, 255, 255, 0.32));
+}
+
+.polyhedron__face--triangle:nth-child(3) {
+  transform: rotateY(144deg) translate3d(0, 5.44303em, 12.31073em) rotateX(10.81232deg) rotate(30deg) skewY(30deg) scaleX(0.86603);
+}
+.polyhedron__face--triangle:nth-child(3):before {
+  background: linear-gradient(90deg, rgba(0, 255, 255, 0.32), rgba(0, 102, 255, 0.32));
+}
+
+.polyhedron__face--triangle:nth-child(8) {
+  transform: rotateY(144deg) rotate(180deg) translate3d(0, 5.50553em, 5.50553em) rotateX(-52.62263deg) rotate(30deg) skewY(30deg) scaleX(0.86603);
+}
+.polyhedron__face--triangle:nth-child(8):before {
+  background: linear-gradient(90deg, rgba(0, 255, 255, 0.32), rgba(0, 102, 255, 0.32));
+}
+
+.polyhedron__face--pentagon:nth-child(13) {
+  transform: rotateY(180deg) translate3d(0, 5.50553em, 12.31073em) rotateX(26.56505deg) rotate(-54deg) skewY(18deg) scaleX(0.95106);
+}
+.polyhedron__face--pentagon:nth-child(13) .penta__inner:before {
+  background: linear-gradient(90deg, rgba(0, 102, 255, 0.32), rgba(51, 0, 255, 0.32));
+}
+
+.polyhedron__face--triangle:nth-child(4) {
+  transform: rotateY(216deg) translate3d(0, 5.44303em, 12.31073em) rotateX(10.81232deg) rotate(30deg) skewY(30deg) scaleX(0.86603);
+}
+.polyhedron__face--triangle:nth-child(4):before {
+  background: linear-gradient(90deg, rgba(51, 0, 255, 0.32), rgba(204, 0, 255, 0.32));
+}
+
+.polyhedron__face--triangle:nth-child(9) {
+  transform: rotateY(216deg) rotate(180deg) translate3d(0, 5.50553em, 5.50553em) rotateX(-52.62263deg) rotate(30deg) skewY(30deg) scaleX(0.86603);
+}
+.polyhedron__face--triangle:nth-child(9):before {
+  background: linear-gradient(90deg, rgba(51, 0, 255, 0.32), rgba(204, 0, 255, 0.32));
+}
+
+.polyhedron__face--pentagon:nth-child(14) {
+  transform: rotateY(252deg) translate3d(0, 5.50553em, 12.31073em) rotateX(26.56505deg) rotate(-54deg) skewY(18deg) scaleX(0.95106);
+}
+.polyhedron__face--pentagon:nth-child(14) .penta__inner:before {
+  background: linear-gradient(90deg, rgba(204, 0, 255, 0.32), rgba(255, 0, 153, 0.32));
+}
+
+.polyhedron__face--triangle:nth-child(5) {
+  transform: rotateY(288deg) translate3d(0, 5.44303em, 12.31073em) rotateX(10.81232deg) rotate(30deg) skewY(30deg) scaleX(0.86603);
+}
+.polyhedron__face--triangle:nth-child(5):before {
+  background: linear-gradient(90deg, rgba(255, 0, 153, 0.32), rgba(255, 0, 0, 0.32));
+}
+
+.polyhedron__face--triangle:nth-child(10) {
+  transform: rotateY(288deg) rotate(180deg) translate3d(0, 5.50553em, 5.50553em) rotateX(-52.62263deg) rotate(30deg) skewY(30deg) scaleX(0.86603);
+}
+.polyhedron__face--triangle:nth-child(10):before {
+  background: linear-gradient(90deg, rgba(255, 0, 153, 0.32), rgba(255, 0, 0, 0.32));
+}
+
+.polyhedron__face--pentagon:nth-child(15) {
+  transform: rotateY(324deg) translate3d(0, 5.50553em, 12.31073em) rotateX(26.56505deg) rotate(-54deg) skewY(18deg) scaleX(0.95106);
+}
+.polyhedron__face--pentagon:nth-child(15) .penta__inner:before {
+  background: linear-gradient(90deg, rgba(255, 0, 0, 0.32), rgba(255, 153, 0, 0.32));
+}

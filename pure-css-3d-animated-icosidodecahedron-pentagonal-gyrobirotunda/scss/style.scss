@@ -1,0 +1,240 @@
+$l: 8em;
+$of: .32;
+$linecol: white;
+
+@function central-angle($n) {
+  @return 360deg/$n;
+}
+
+@function in-angle($n) {
+  @return 180deg*($n - 2)/$n;
+}
+
+@function skew-angle($in-angle) {
+  @return abs(90deg - $in-angle)
+}
+
+@function inradius($n, $l) {
+  @return ($l/2)/tan(central-angle($n)/2);
+}
+
+@function circumradius($n, $l) {
+  @return ($l/2)/sin(central-angle($n)/2);
+}
+
+$tri-n: 3;
+$tri-ca: central-angle($tri-n);
+$tri-a: in-angle($tri-n);
+$tri-sa: skew-angle($tri-a);
+$tri-h: $l*sin($tri-a);
+$tri-ri: inradius($tri-n, $l);
+$tri-rc: circumradius($tri-n, $l);
+
+$penta-n: 5;
+$penta-ca: central-angle($penta-n);
+$penta-a: in-angle($penta-n);
+$penta-sa: skew-angle($penta-n);
+$penta-ri: inradius($penta-n, $l);
+$penta-rc: circumradius($penta-n, $l);
+$penta-h: $penta-ri + $penta-rc;
+$penta-rhl: $l + $l/2/sin(90deg - (180deg - $penta-a));
+$penta-rha1: $penta-a;
+$penta-rhsa1: abs(90deg - $penta-rha1);
+$penta-rha2: 180deg - 2*(180deg - $penta-a);
+$penta-rhsa2: abs(90deg - $penta-rha2);
+$penta-sup: $l*cos($penta-a/2);
+$penta-inf: $penta-rhl*cos($penta-a/2) - $penta-sup; /* ok */
+
+$deca-n: 10;
+$deca-ca: central-angle($deca-n);
+$deca-ri: inradius($deca-n, $l);
+$deca-rc: circumradius($deca-n, $l);
+
+$proj-h: $deca-ri - $penta-rc;
+
+@function asin($value, $unit: 'rad', $precision: 25) {
+  $coeff: 1;
+  $sum: 0;
+  $flag: 0;
+  $sign: 1;
+  
+  @if $value > 1 {
+    @warn 'Invalid input.';
+    @return false;
+  }
+  
+  @if abs($value) > 1/sqrt(2) {
+    $flag: 1;
+    $sign: $value/abs($value);
+    $value: sqrt(1 - pow($value, 2));
+  }
+  
+  $sum: $sum + $coeff*$value;
+  
+  @for $i from 1 through $precision {
+    $coeff: $coeff*(2*$i - 1)/(2*$i);
+    $sum: $sum + $coeff*pow($value, 2*$i + 1)/(2*$i + 1);
+  }
+  
+  $result: $sign*($flag*pi()/2 + pow(-1, $flag)*$sum);
+  $result: $result*180deg/pi();
+  
+  @return $result;
+}
+
+$penta-rax: asin($proj-h/$penta-h);
+$rotunda-h: sqrt(pow($penta-h, 2) - pow($proj-h, 2));
+$rotunda-inf: $penta-inf*cos($penta-rax);
+$rotunda-sup: $rotunda-h - $rotunda-inf;
+$tri-inf-rax: 90deg - asin($rotunda-inf/$tri-h);
+$tri-sup-rax: 90deg - asin($rotunda-sup/$tri-h);
+
+@mixin sp($w, $h: $w) {
+  margin: if($w == $h, -$w/2, -$h/2 (-$w/2));
+  width: $w; height: $h;
+}
+
+@mixin gradme($n, $rc, $ac: 0deg, $ac2: 0, $rev: false) {
+  $bg: ();
+  @for $i from 0 to $n {
+    $a: $i*360deg/$n + $ac;
+    $au: if($rev, 360 - $a/1deg, $a/1deg);
+    $c: hsl($au + $ac2, 100%, 50%);
+    $bg: $bg, radial-gradient(circle at 
+        $rc*(1 + cos($a)) $rc*(1 + sin($a)), 
+      rgba($c, $of), rgba($c, 0) 1.25*$rc);
+  }
+  background: $bg;
+  background-position: 50% 50%;
+  background-size: 2*$rc 2*$rc;
+}
+
+html, body { height: 100%; }
+
+html {
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  perspective: 32em;
+  background: dimgrey;
+  color: $linecol;
+}
+
+.polyhedron, .polyhedron *, .polyhedron *:before {
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%; left: 50%;
+  transform-style: preserve-3d;
+}
+
+.polyhedron--icosidodecahedron {
+  //transform: rotateX(85deg);
+  animation: ani 16s linear infinite;
+}
+
+/**/
+@keyframes ani {
+  from { transform: rotate(0deg) rotateX(0deg); }
+  to { transform: rotate(360deg) rotateX(-720deg); }
+}
+
+.polyhedron--pentagonal-rotunda:first-child {
+  transform: translateY(-$rotunda-h/2);
+}
+.polyhedron--pentagonal-rotunda:last-child {
+  transform: 
+    rotateY($deca-ca) scaleY(-1) translateY(-$rotunda-h/2);
+}
+
+.polyhedron__face {
+  overflow: hidden;
+  @include sp($l);
+  //backface-visibility: hidden;
+  *, &:before, *:before {
+    overflow: hidden;
+    margin: inherit;
+    width: inherit; height: inherit;
+  }
+}
+
+.polyhedron__face--triangle:before,
+.penta__inner:before {
+  border: solid .0625em;
+  content: '';
+}
+
+.polyhedron__face--triangle {
+  border-top: solid .125em;
+  border-left: solid .125em;
+  &:before {
+    transform: scaleX(1/cos($tri-sa)) skewY(-$tri-sa) 
+               rotate(-$tri-a/2) translateY(-50%);
+  }
+}
+
+.polyhedron__face--pentagon {
+  @include sp($penta-rhl);
+  transform: rotateY(2*$penta-ca)
+             translate3d(-.0625em, -$rotunda-h/2, $penta-ri) 
+             rotateX(90deg) 
+             rotate(-$penta-rha1/2)
+             skewY($penta-rhsa1) scaleX(cos($penta-rhsa1));
+}
+
+.penta__inner {
+  transform: scaleX(1/cos($penta-rhsa1)) skewY(-$penta-rhsa1) 
+             rotate($penta-rha1/2) 
+             translateY(-$penta-inf)
+             rotate($penta-rha2/2)
+             skewY($penta-rhsa2) scaleX(cos($penta-rhsa2));
+  &:before {
+    @include sp(2*$penta-rc, $penta-rc + $penta-ri);
+    transform: scaleX(1/cos($penta-rhsa2)) skewY(-$penta-rhsa2) 
+               rotate(-$penta-rha2/2) 
+               translateY($penta-inf - ($penta-rc + $penta-ri)/2);
+    background: rgba(247, 80, 103, $of);
+    @include gradme($penta-n, $penta-rc, -90deg, -72, true);
+  }
+}
+
+@for $i from 0 to 5 {
+  .polyhedron__face--triangle:nth-child(#{$i + 1}) {
+    transform: rotateY($i*$penta-ca) 
+               translate3d(0, $rotunda-h/2 - .0625em, $deca-ri) 
+               rotateX($tri-inf-rax) 
+               rotate($tri-a/2) 
+               skewY($tri-sa) scaleX(cos($tri-sa));
+    &:before {
+      background: linear-gradient(90deg, 
+        hsla((2*$i + 1)*360/$deca-n, 100%, 50%, $of), 
+        hsla(2*($i + 1)*360/$deca-n, 100%, 50%, $of));
+    }
+  }
+  .polyhedron__face--triangle:nth-child(#{$i + 6}) {
+    transform: rotateY($i*$penta-ca) 
+               rotate(180deg)
+               translate3d(0, $rotunda-h/2, $penta-ri) 
+               rotateX(-$tri-sup-rax) 
+               rotate($tri-a/2) 
+               skewY($tri-sa) scaleX(cos($tri-sa));
+    &:before {
+      background: linear-gradient(90deg, 
+        hsla((2*$i + 1)*360/$deca-n, 100%, 50%, $of), 
+        hsla(2*($i + 1)*360/$deca-n, 100%, 50%, $of));
+    }
+  }
+  .polyhedron__face--pentagon:nth-child(#{$i + 11}) {
+    transform: rotateY(($i + .5)*$penta-ca) 
+               translate3d(0, $rotunda-h/2, $deca-ri) 
+               rotateX($penta-rax) 
+               rotate(-$penta-rha1/2)
+               skewY($penta-rhsa1) scaleX(cos($penta-rhsa1));
+    .penta__inner:before {
+      background: linear-gradient(90deg, 
+        hsla(2*($i + 1)*360/$deca-n, 100%, 50%, $of), 
+        hsla((2*$i + 3)*360/$deca-n, 100%, 50%, $of));
+    }
+  }
+}
