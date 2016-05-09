@@ -1,0 +1,8 @@
+@import url(https://fonts.googleapis.com/css?family=Philosopher);
+body {
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  cursor: pointer;
+  font-family: 'Philosopher', sans-serif;
+}
