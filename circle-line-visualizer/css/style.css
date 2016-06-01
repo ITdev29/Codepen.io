@@ -1,0 +1,22 @@
+body {
+	background: #000;
+	overflow: hidden;
+}
+
+canvas {
+	display: block;
+}
+
+body .dg .c .slider-fg {
+	background: #666;	
+}
+
+.slider-fg {
+	-webkit-transition: width 150ms;
+	transition: width 150ms;	
+}
+
+.slider:active .slider-fg {
+	-webkit-transition-duration: 0ms;
+	        transition-duration: 0ms;
+}
