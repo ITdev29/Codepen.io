@@ -1,0 +1,41 @@
+$cubic: cubic-bezier(0.5, 0.8, 0.5, 0.2);
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+html {
+   height: 100%;
+}
+
+body {
+   display: flex;
+   height: 100%;
+   background-color: #00214a;
+   justify-content: center;
+   align-items: center;
+}
+
+.svg-wrapper {
+   position: relative;
+   width: 160px;
+   height: 160px;
+   
+   svg {
+      position: absolute;
+      top: 0;
+      width: 100%;
+   }
+   
+   .moon-satelite {
+     animation-name: spin;
+     animation-duration: 2s;
+     animation-iteration-count: infinite;
+     animation-timing-function: $cubic;
+   }
+}
